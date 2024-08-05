@@ -1,4 +1,4 @@
-const { Triangle, Circle, Square, Shape } = require('./shapes.js');
+const { Triangle, Circle, Square, Shape } = require('../lib/shapes.js');
 
 describe('Triangle', () => {
     it("should render a blue triangle", () => {

@@ -10,7 +10,13 @@ const questions = [
     {
         type: 'input',
         name: 'text',
-        message: colors.brightMagenta("Please enter up to three characters as your logo content.")
+        message: colors.brightMagenta("Please enter up to three characters as your logo content."),
+        validate: (input) => {
+            if (input.length > 3) {
+              return 'Text must be 3 characters or less';
+            }
+            return true;
+          }
     },
     {
         type: 'input',
@@ -41,12 +47,11 @@ function init() {
         // console.log(answers);
         console.log("Generating logo.svg");
         const mylogo = generateLogo(answers);
-        console.log(mylogo);
-        fs.writeFile('logo.svg', mylogo, (err) => {  
+        fs.writeFile('examples/logo.svg', mylogo, (err) => {  
             // throws an error, you could also catch it here
             if (err) throw err;    
             // success case, the file was saved
-            console.log('SVG written!');
+            // console.log('SVG written!');
         }); 
     })
     .catch((error) => {
