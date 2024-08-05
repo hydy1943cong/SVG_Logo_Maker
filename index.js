@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const colors = require("colors");
 const fs = require('fs');
+const generateLogo = require('./lib/generateLogo.js')
 
 
 // Create an array of questions for user input
@@ -30,69 +31,23 @@ const questions = [
 ]
 
 
-// Create a function to create an SVG file
 
-function writeToFile(answers) {
-    const licenseBadge = licenseBadges[answers.license] || "";
-    const licenseNotice = answers.license !== 'None'
-        ? `This application is covered under the ${answers.license}.`
-        : "This application does not have a license.";
-
-    const readmeContent = `
-# ${answers.title}
-
-${licenseBadge}
-
-## Table of Contents
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Languages](#languages)
-- [License](#license)
-- [Questions](#questions)
-
-## Description
-${answers.description}
-
-## Installation
-${answers.installation}
-
-## Usage
-${answers.usage}
-
-## Contributing
-${answers.contributing}
-
-## Tests
-${answers.tests}
-
-## Languages
-${answers.language.join(', ')}
-
-## License
-${licenseNotice}
-
-## Questions
-- Check my GitHub: [${answers.github}](https://github.com/${answers.github})
-- Email me with your questions: ${answers.email}
-    `;
-
-    fs.writeFile('README.md', readmeContent, (err) => {
-        if (err) throw err;
-        console.log('README.md created successfully!');
-    });
-}
 
 // Create a function to initialize app
 function init() {
     inquirer
     .prompt(questions)
     .then((answers) => {
-        console.log(answers);
-        console.log("Generated logo.svg");
-        writeToFile(answers);
+        // console.log(answers);
+        console.log("Generating logo.svg");
+        const mylogo = generateLogo(answers);
+        console.log(mylogo);
+        fs.writeFile('logo.svg', mylogo, (err) => {  
+            // throws an error, you could also catch it here
+            if (err) throw err;    
+            // success case, the file was saved
+            console.log('SVG written!');
+        }); 
     })
     .catch((error) => {
         if (error.isTtyError) {
